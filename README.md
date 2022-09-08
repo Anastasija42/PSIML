@@ -89,7 +89,7 @@ We started with our pretrained U-NET on 10 epochs without these losses, and addi
 As we can see, checkerboard artifacts aren't visible anymore!
 
 ## U-NET with pretrained ResNet50 Encoder
-To improve our model even more, we took the pretrained ResNet50 from TorchVision model library. **This model** [[4]](#4) from GitHub implemented exactly what we wanted, so we copied their implementation. This model, since using pretrained encoder, didn't take as much space on our CUDA, so we managed to train 10 epochs with batch_size 4, again using 40000 images. Even though the ResNet50 was pretrained on image classification task, this model proved to work really well for depth estimation. The results, again - image, ground truth, our prrediction, respectively:
+To improve our model even more, we took the pretrained ResNet50 from TorchVision model library. **This model** [[4]](#4) from GitHub implemented exactly what we wanted, so we copied their implementation. This model, since using pretrained encoder, didn't take as much space on our CUDA, so we managed to train 10 epochs with batch_size 4, again using 40000 images. Even though the ResNet50 was pretrained on image classification task, this model proved to work really well for depth estimation. The results, again - image, ground truth, our prediction, respectively:
 <p float="left" align="middle">
   <img align="top" src="https://user-images.githubusercontent.com/112171137/189136462-f6a3aca2-7b7b-4f3e-b08d-7354eaaaec6f.png" width="32%" />
   <img align="top" src="https://user-images.githubusercontent.com/112171137/189136503-8cf13381-bf6a-49ed-b250-7fd238bda8c5.png" width="32%" /> 
