@@ -46,7 +46,7 @@ We implemented U-NET from scratch, following the dimensions from the original pa
   <img align="top" src="https://user-images.githubusercontent.com/112171137/189136817-6ae3b52c-c94b-4a9f-b25a-cd2a80910e41.png" width="32%" /> 
   <img align="top" src="https://user-images.githubusercontent.com/112171137/189136855-a0200b7b-1147-4a1b-b71e-211162fb0e14.png" width="32%" />
 </p>
-We figured out the potential reason for the lines - when upsampling the images (decoder part), we used ConvTranspose, but turns out that nilinear Upsampling layer would perform better, the output it produces is more continuous in a way.
+We figured out the potential reason for the lines - when upsampling the images (decoder part), we used ConvTranspose, but turns out that bilinear Upsampling layer would perform better, the output it produces is more continuous in a way.
 However, we found another way to improve our U-NET, still using ConvTranspose.
 
 ## U-NET improved version
@@ -71,7 +71,7 @@ or equivalently
 <p float="left" align="middle">
   <img align="top" src="https://user-images.githubusercontent.com/112171137/189176779-ff42865e-18ea-4281-9ee9-cd0bce6f1068.png" width="300" />
 </p>
-which tells us that we want to minimize the angles between gradient vectors between predicted depth and ground truth - when that angle is close to 0, cosines above will be close to one so normal loss will be close to 0. This loss is believed to help with refining details.  
+which tells us that we want to minimize the angle between gradient vectors of predicted depth and ground truth - when that angle is close to 0, cosines above will be close to one so normal loss will be close to 0. This loss is believed to help with refining details.  
 <br />
 <br />
 We started with our pretrained U-NET on 10 epochs without these losses, and adding them to the game changed the results after only one more epoch! Here are the results, first - original picture, next - true depth, last - our estimation:
