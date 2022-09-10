@@ -1,7 +1,7 @@
-
 import torch
 import torch.nn as nn
 import torchvision
+
 resnet = torchvision.models.resnet.resnet50(pretrained=True)
 
 
@@ -41,9 +41,9 @@ class UpBlockForUNetWithResNet50(nn.Module):
                  upsampling_method="conv_transpose"):
         super().__init__()
 
-        if up_conv_in_channels == None:
+        if up_conv_in_channels is None:
             up_conv_in_channels = in_channels
-        if up_conv_out_channels == None:
+        if up_conv_out_channels is None:
             up_conv_out_channels = out_channels
 
         if upsampling_method == "conv_transpose":
@@ -67,7 +67,7 @@ class UpBlockForUNetWithResNet50(nn.Module):
 class UNetWithResnet50Encoder(nn.Module):
     DEPTH = 6
 
-    def __init__(self, out_channels = 1):
+    def __init__(self, out_channels=1):
         super().__init__()
         resnet = torchvision.models.resnet.resnet50(pretrained=True)
         down_blocks = []
@@ -116,8 +116,3 @@ class UNetWithResnet50Encoder(nn.Module):
             return x, output_feature_map
         else:
             return x
-
-model = UNetWithResnet50Encoder().cuda()
-inp = torch.rand((2, 3, 480, 640)).cuda()
-out = model(inp)
-print(out.shape)

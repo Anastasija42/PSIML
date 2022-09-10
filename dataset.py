@@ -1,40 +1,39 @@
-import os
-import shutil
+from torch.utils.data import Dataset
 from PIL import Image
-import numpy as np
-import scipy.ndimage
-import os
-import scipy.io
-import h5py
-import pdb
+from torchvision import transforms
+import torchvision.transforms.functional as TF
+import random
+from parameters import NYUD_MEAN, NYUD_STD
 
-def save_npy(source_dir, target_dir):
-    if not os.path.isdir(source_dir):
-        os.makedirs(source_dir)
-    nyud_file_path = os.path.join(source_dir, 'nyu_depth_v2_labeled.mat')
-    splits_file_path = os.path.join(source_dir, 'splits.mat')
 
-    print("Loading dataset: NYU Depth V2")
-    nyud_dict = h5py.File(nyud_file_path, 'r')
-    splits_dict = scipy.io.loadmat(splits_file_path)
+class MyDataset(Dataset):
+    def __init__(self, data, transform=False):
+        self.data_paths = data
+        self.transform = transform
 
-    images = np.asarray(nyud_dict['images'], dtype=np.float32)
-    depths = np.asarray(nyud_dict['depths'], dtype=np.float32)
+    def __len__(self):
+        return len(self.data_paths)
 
-    images = images.swapaxes(2, 3)
-    depths = np.expand_dims(depths.swapaxes(1, 2), 1)
+    def __getitem__(self, index):
+        image_path, depth_path = self.data_paths[index]
+        image = Image.open(image_path)
+        depth = Image.open(depth_path)
+        
+        convert_tensor = transforms.ToTensor()
+        image = convert_tensor(image)
+        depth = convert_tensor(depth)
 
-    indices = splits_dict['testNdxs'][:, 0] - 1
+        if self.transform:
+            if random.random() > 0.5:
+                image = TF.hflip(image)
+                depth = TF.hflip(depth)
 
-    images = np.take(images, indices, axis=0)
-    depths = np.take(depths, indices, axis=0)
+            if random.random() > 0.5:
+                image = TF.vflip(image)
+                depth = TF.vflip(depth)
 
-    npy_folder = os.path.join(target_dir, 'npy')
-    os.makedirs(npy_folder)
+            transform = transforms.Normalize(NYUD_MEAN, NYUD_STD)
+            image = transform(image)
 
-    np.save(os.path.join(npy_folder, 'images.npy'), images)
-    np.save(os.path.join(npy_folder, 'depths.npy'), depths)
+        return image, depth
 
-if __name__ == '__main__':
-    save_npy('C:/Users/psiml8/Documents/GitHub/PSIML',
-             'C:/Users/psiml8/Documents/GitHub/PSIML')
