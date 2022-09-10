@@ -10,6 +10,11 @@ All of the code is in Python and we used PyTorch.
 First, we implemented U-NET from scratch, but the results weren't the best.
 To improve them, we changed the loss, from usual MSE loss to sum of three losses: MSE, gradient and normal loss.
 For even better results, we substituted U-NET encoder with pretrained ResNet50.
+
+## How to use
+If you want to try out our project, all you need to do is download the dataset, place the data nto the project, run data.py once and set all the parameters in parameters.py. The training is done in train.py function.
+
+
 ## Dataset
 All our models were trained on **NYU Depth V2 dataset** [[1]](#1). It contains around 50000 images of indoor spaces along with their grayscale labels, both in resolution 480×640. In order to show results visually, we put
 the grayscale pictures through a colormap. Here are some samples from the dataset.
@@ -34,7 +39,7 @@ As you can see, it has its name because it looks like the letter U. Most of the 
 </p>
 
 ## U-NET first results
-We implemented U-NET from scratch, following the dimensions from the original paper. To our surprise, the network itself occupied huge part of CUDA's memory. We managed to train 10 epochs with batch size set to 2, using 40000 images for training. The training was done on NVIDIA Tesla v100 GPU. The results, shown below, were ok, but there were unwanted parallel lines showing. First image is the original one, next to it is the true depth and then our estimation:
+We implemented U-NET from scratch, following the dimensions from the original paper. To our surprise, the network itself occupied huge part of CUDA's memory. We managed to train 10 epochs with batch size set to 2, using 40000 images for training. The training was done on NVIDIA Tesla v100 GPU, it lasted for around 13h. The results, shown below, were ok, but there were unwanted parallel lines showing. First image is the original one, next to it is the true depth and then our estimation:
 
 <p float="left" align="middle">
   <img align="top" src="https://user-images.githubusercontent.com/112171137/189136462-f6a3aca2-7b7b-4f3e-b08d-7354eaaaec6f.png" width="32%" />
