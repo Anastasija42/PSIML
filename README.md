@@ -12,7 +12,7 @@ To improve them, we changed the loss, from usual MSE loss to sum of three losses
 For even better results, we substituted U-NET encoder with pretrained ResNet50.
 
 ## How to use
-If you want to try out our project, all you need to do is download the dataset, place the data nto the project, run data.py once and set all the parameters in parameters.py. The training is done in train.py function.
+If you want to try out our project, all you need to do is download the dataset, place the data into the project, run data.py once and set all the parameters in parameters.py. The training is done in train.py function.
 
 
 ## Dataset
